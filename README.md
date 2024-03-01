@@ -23,12 +23,6 @@ A VScript file that will automatically scramble a players weapons on spawn. Can 
 script_execute randomizerVS 
 ```
 
-## Authors
-
-Contributors names and contact info
-
-Vic Gasior III
-
 ## Version History
 
 * 0.1
