@@ -96,7 +96,7 @@ IncludeScript("give_tf_weapon/code/__exec.nut")			// Executes all functions that
 //-----------------------------
 // Flags
 local class_restrict_weapons = false // Restricts random weapons to being only from ones own class
-local randomize_class = false // Randomizes class on spawn
+local randomize_class = false // !!!BROKEN DONT TURN ON!!! Randomizes class on spawn
 
 // Weapon arrays https://wiki.alliedmods.net/Team_fortress_2_item_definition_indexes
 // Scout
@@ -182,23 +182,51 @@ function GiveRandomWeapon(hPlayer, slot = 0, merc = 0)
     }
 }
 
-function OnGameEvent_player_death(params) //Player death
-{
-    if (!("userid" in params)) return;
+// From https://developer.valvesoftware.com/wiki/Team_Fortress_2/Scripting/VScript_Examples/en#Force_Change_Class
+::ForceChangeClass <- function(player, classIndex) {
+	player.SetPlayerClass(classIndex);
+	NetProps.SetPropInt(player, "m_Shared.m_iDesiredPlayerClass", classIndex);
+	player.ForceRegenerateAndRespawn();
+}
+// ForceChangeClass(GetListenServerHost(), Constants.ETFClass.TF_CLASS_SCOUT);
 
-    //Defines player handle as hPlayer
-	    local hPlayer = GetPlayerFromUserID(params.userid);
-    // Updates ragdoll to the player's actual class.
-	    hPlayer.SetCustomModelWithClassAnimations(GTFW_MODEL_TFCLASSES[hPlayer.GetPlayerClass()]);
-
-    
+function RandomizeClass(hPlayer){
+    local roll = RandomInt(1, 9)
+    switch(roll){
+        case 1: // Scout
+            ForceChangeClass(hPlayer, Constants.ETFClass.TF_CLASS_SCOUT);
+            break;
+        case 2: // Solly
+            ForceChangeClass(hPlayer, Constants.ETFClass.TF_CLASS_SOLDIER);
+            break;
+        case 3: // Pyro
+            ForceChangeClass(hPlayer, Constants.ETFClass.TF_CLASS_PYRO);
+            break;
+        case 4: // Demo
+            ForceChangeClass(hPlayer, Constants.ETFClass.TF_CLASS_DEMOMAN);
+            break;
+        case 5: // Heavy
+            ForceChangeClass(hPlayer, Constants.ETFClass.TF_CLASS_HEAVYWEAPONS);
+            break;
+        case 6: // Engi
+            ForceChangeClass(hPlayer, Constants.ETFClass.TF_CLASS_ENGINEER);
+            break;
+        case 7: // Med
+            ForceChangeClass(hPlayer, Constants.ETFClass.TF_CLASS_MEDIC);
+            break;
+        case 8: // Sniper
+            ForceChangeClass(hPlayer, Constants.ETFClass.TF_CLASS_SNIPER);
+            break;
+        case 9: // Snpy
+            ForceChangeClass(hPlayer, Constants.ETFClass.TF_CLASS_SPY);
+            break;
+    }
 }
 
-function OnGameEvent_player_spawn(params){
-    if (!("userid" in params)) return;
-
-    //Defines player handle as hPlayer
-	    local hPlayer = GetPlayerFromUserID(params.userid);
+function RandomizeOnSpawn(hPlayer){
+    if(randomize_class){
+        RandomizeClass(hPlayer);
+    }
 
     if(!class_restrict_weapons){
         GiveRandomWeapon(hPlayer, 0, 0);
@@ -254,6 +282,32 @@ function OnGameEvent_player_spawn(params){
             GiveRandomWeapon(hPlayer, 2, 9);
             break;
     }
+}
+
+function OnGameEvent_player_death(params) //Player death
+{
+    if (!("userid" in params)) return;
+
+    //Defines player handle as hPlayer
+	    local hPlayer = GetPlayerFromUserID(params.userid);
+    // Updates ragdoll to the player's actual class.
+	    hPlayer.SetCustomModelWithClassAnimations(GTFW_MODEL_TFCLASSES[hPlayer.GetPlayerClass()]);
+}
+
+function OnGameEvent_player_spawn(params){
+    if (!("userid" in params)) return;
+
+    //Defines player handle as hPlayer
+	local hPlayer = GetPlayerFromUserID(params.userid);
+    RandomizeOnSpawn(hPlayer)
+}
+
+function OnGameEvent_player_intial_spawn(params){
+    if (!("userid" in params)) return;
+
+    //Defines player handle as hPlayer
+	local hPlayer = GetPlayerFromUserID(params.userid);
+    RandomizeOnSpawn(hPlayer)
 }
 
 
