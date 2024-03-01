@@ -144,6 +144,7 @@ local spy_primary = [24, 61, 161, 224, 460, 525]
 local spy_secondary = [753, 810]
 local spy_melee = [4, 225, 356, 461, 649, 727]
 local spy_weapons = [spy_primary, spy_secondary, spy_melee]
+local spy_watches = [30, 59, 60, 297, 947]
 
 // int class - 0 gives all weapons, 1 - Scout, 2 - Soldier etc.
 function GiveRandomWeapon(hPlayer, slot = 0, merc = 0)
@@ -280,6 +281,7 @@ function RandomizeOnSpawn(hPlayer){
             GiveRandomWeapon(hPlayer, 0, 9);
             GiveRandomWeapon(hPlayer, 1, 9);
             GiveRandomWeapon(hPlayer, 2, 9);
+            hPlayer.GiveWeapon(spy_watches[RandomInt(0, spy_watches.len())]);
             break;
     }
 }
