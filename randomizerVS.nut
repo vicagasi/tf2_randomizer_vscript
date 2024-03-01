@@ -95,10 +95,10 @@ IncludeScript("give_tf_weapon/code/__exec.nut")			// Executes all functions that
 // Scout
 local scout_primary = [13, 45, 220, 448, 772, 1103, 1103]
 local scout_secondary = [23, 46, 163, 222, 449, 773, 812]
-local scout_melee = [0, 44, 221, 317, 325, 349, 355, 450, 452, 648, 30667]
+local scout_melee = [0, 44, "Holy Mackerel", 317, 325, 349, 355, 450, 452, 648, 30667]
 local scout_weapons = [scout_primary, scout_secondary, scout_melee]
 // Soldier
-local solly_primary = [18, 127, 228, 237, 414, 441, 513, 730, 1104]
+local solly_primary = [18, 127, "Black Box", 237, 414, 441, 513, 730, 1104]
 local solly_secondary = [10, 129, 133, 226, 354, 415, 442, 444, 1101, 1153]
 local solly_melee = [6, 128, 154, 357, 416, 447, 775]
 local solly_weapons = [solly_primary, solly_secondary, solly_melee]
@@ -125,7 +125,7 @@ local engi_weapons = [engi_primary, engi_secondary, engi_melee]
 // Med
 local med_primary = [17, 36, 305, 412]
 local med_secondary = [29, 35, 411, 998]
-local med_melee = [8, 37, 173, 264, 304, 413,]
+local med_melee = [8, 37, 173, 264, 304, 413]
 local med_weapons = [med_primary, med_secondary, med_melee]
 // Sniper
 local sniper_primary = [14, 56, 230, 402, 526, 752, 851, 1092, 1098]
