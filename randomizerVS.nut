@@ -91,6 +91,13 @@ if ( "TF_CUSTOM_WEAPONS_REGISTRY" in getroottable() ) return;
 IncludeScript("give_tf_weapon/libs/netpropperf.nut")	//according to ficool2, reduces NetProps runtime by some-20%!
 IncludeScript("give_tf_weapon/code/__exec.nut")			// Executes all functions that this script uses!
 
+//-----------------------------
+// RANDOMIZER STUFF STARTS HERE
+//-----------------------------
+// Flags
+local class_restrict_weapons = false // Restricts random weapons to being only from ones own class
+local randomize_class = false // Randomizes class on spawn
+
 // Weapon arrays https://wiki.alliedmods.net/Team_fortress_2_item_definition_indexes
 // Scout
 local scout_primary = [13, 45, 220, 448, 772, 1103, 1103]
@@ -169,7 +176,7 @@ function GiveRandomWeapon(hPlayer, slot = 0, merc = 0)
         case 8: // Sniper
             hPlayer.GiveWeapon(sniper_weapons[slot][RandomInt(0, sniper_weapons[slot].len())]);
             break;
-        case 8: // Snpy
+        case 9: // Snpy
             hPlayer.GiveWeapon(spy_weapons[slot][RandomInt(0, spy_weapons[slot].len())]);
             break;
     }
@@ -193,10 +200,60 @@ function OnGameEvent_player_spawn(params){
     //Defines player handle as hPlayer
 	    local hPlayer = GetPlayerFromUserID(params.userid);
 
-    //hPlayer.GiveWeapon(scout_weapons[0][RandomInt(0, scout_weapons[0].len())])
-    GiveRandomWeapon(hPlayer, 0, 0);
-    GiveRandomWeapon(hPlayer, 1, 0);
-    GiveRandomWeapon(hPlayer, 2, 0);
+    if(!class_restrict_weapons){
+        GiveRandomWeapon(hPlayer, 0, 0);
+        GiveRandomWeapon(hPlayer, 1, 0);
+        GiveRandomWeapon(hPlayer, 2, 0);
+        return;
+    }
+
+    switch(hPlayer.GetPlayerClass()){
+        case Constants.ETFClass.TF_CLASS_SCOUT: // Scout
+            GiveRandomWeapon(hPlayer, 0, 1);
+            GiveRandomWeapon(hPlayer, 1, 1);
+            GiveRandomWeapon(hPlayer, 2, 1);
+            break;
+        case Constants.ETFClass.TF_CLASS_SOLDIER: // Solly
+            GiveRandomWeapon(hPlayer, 0, 2);
+            GiveRandomWeapon(hPlayer, 1, 2);
+            GiveRandomWeapon(hPlayer, 2, 2);
+            break;
+        case Constants.ETFClass.TF_CLASS_PYRO: // Pyro
+            GiveRandomWeapon(hPlayer, 0, 3);
+            GiveRandomWeapon(hPlayer, 1, 3);
+            GiveRandomWeapon(hPlayer, 2, 3);
+            break;
+        case Constants.ETFClass.TF_CLASS_DEMOMAN: // Demo
+            GiveRandomWeapon(hPlayer, 0, 4);
+            GiveRandomWeapon(hPlayer, 1, 4);
+            GiveRandomWeapon(hPlayer, 2, 4);
+            break;
+        case Constants.ETFClass.TF_CLASS_HEAVYWEAPONS: // Heavy
+            GiveRandomWeapon(hPlayer, 0, 5);
+            GiveRandomWeapon(hPlayer, 1, 5);
+            GiveRandomWeapon(hPlayer, 2, 5);
+            break;
+        case Constants.ETFClass.TF_CLASS_ENGINEER: // Engi
+            GiveRandomWeapon(hPlayer, 0, 6);
+            GiveRandomWeapon(hPlayer, 1, 6);
+            GiveRandomWeapon(hPlayer, 2, 6);
+            break;
+        case Constants.ETFClass.TF_CLASS_MEDIC: // Med
+            GiveRandomWeapon(hPlayer, 0, 7);
+            GiveRandomWeapon(hPlayer, 1, 7);
+            GiveRandomWeapon(hPlayer, 2, 7);
+            break;
+        case Constants.ETFClass.TF_CLASS_SNIPER: // Sniper
+            GiveRandomWeapon(hPlayer, 0, 8);
+            GiveRandomWeapon(hPlayer, 1, 8);
+            GiveRandomWeapon(hPlayer, 2, 8);
+            break;
+        case Constants.ETFClass.TF_CLASS_SPY: // Snpy
+            GiveRandomWeapon(hPlayer, 0, 9);
+            GiveRandomWeapon(hPlayer, 1, 9);
+            GiveRandomWeapon(hPlayer, 2, 9);
+            break;
+    }
 }
 
 
