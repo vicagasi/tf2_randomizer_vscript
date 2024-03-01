@@ -1,5 +1,4 @@
-//FY VScript by Vicky G (Rivi the Warlock)
-//Based on Team Deathmatch VScript by John Worden (MilkMaster72)
+//FY VScript by Vic Gasior (Rivi the Warlock)
 //Using give_tf_weapon library by Yaki
 ClearGameEventCallbacks()	//Clears any pre-existing OnGameEvent listeners. WARNING: If you're using other events, be aware that this is here or just comment this function out.
 
@@ -103,19 +102,75 @@ local solly_primary = [18, 127, 228, 237, 414, 441, 513, 730, 1104]
 local solly_secondary = [10, 129, 133, 226, 354, 415, 442, 444, 1101, 1153]
 local solly_melee = [6, 128, 154, 357, 416, 447, 775]
 local solly_weapons = [solly_primary, solly_secondary, solly_melee]
+// Pyro
+local pyro_primary = [21, 40, 215, 594, 659, 741, 1178]
+local pyro_secondary = [12, 39, 351, 415, 595, 740, 1153, 1179, 1180]
+local pyro_melee = [2, 38, 153, 214, 326, 348, 595, 813, 1181]
+local pyro_weapons = [pyro_primary, pyro_secondary, pyro_melee]
+// Demo
+local demo_primary = [19, 308, 405, 996, 1151] // Excluded base jumper
+local demo_secondary = [20, 130, 131, 406, 1099, 1150]
+local demo_melee = [1, 132, 154, 172, 266, 307, 327, 357, 404, 609]
+local demo_weapons = [demo_primary, demo_secondary, demo_melee]
+// Heavy
+local heavy_primary = [15, 41, 312, 424, 811, 298]
+local heavy_secondary = [11, 42, 159, 311, 425, 433, 1153, 1190]
+local heavy_melee = [5, 43, 239, 310, 331, 426, 587]
+local heavy_weapons = [heavy_primary, heavy_secondary, heavy_melee]
+// Engi
+local engi_primary = [9, 141, 527, 588, 997, 1153]
+local engi_secondary = [22, 140, 528, 294]
+local engi_melee = [7, 142, 155, 169, 329, 589]
+local engi_weapons = [engi_primary, engi_secondary, engi_melee]
+// Med
+local med_primary = [17, 36, 305, 412]
+local med_secondary = [29, 35, 411, 998]
+local med_melee = [8, 37, 173, 264, 304, 413,]
+local med_weapons = [med_primary, med_secondary, med_melee]
+// Sniper
+local sniper_primary = [14, 56, 230, 402, 526, 752, 851, 1092, 1098]
+local sniper_secondary = [16, 57, 58, 231, 642]
+local sniper_melee = [3, 171, 232, 401, 423, 1013, 1071]
+local sniper_weapons = [sniper_primary, sniper_secondary, sniper_melee]
+// Spy
+local spy_primary = [24, 61, 161, 224, 460, 525]
+local spy_secondary = [753, 810]
+local spy_melee = [4, 225, 356, 461, 649, 727]
+local spy_weapons = [spy_primary, spy_secondary, spy_melee]
 
 // int class - 0 gives all weapons, 1 - Scout, 2 - Soldier etc.
 function GiveRandomWeapon(hPlayer, slot = 0, merc = 0)
 {
     switch(merc){
         case 0: // Recursively provide a random class
-            GiveRandomWeapon(hPlayer, slot, RandomInt(1, 2));
+            GiveRandomWeapon(hPlayer, slot, RandomInt(1, 9));
             break;
         case 1: // Scout
             hPlayer.GiveWeapon(scout_weapons[slot][RandomInt(0, scout_weapons[slot].len())]);
             break;
         case 2: // Solly
             hPlayer.GiveWeapon(solly_weapons[slot][RandomInt(0, solly_weapons[slot].len())]);
+            break;
+        case 3: // Pyro
+            hPlayer.GiveWeapon(pyro_weapons[slot][RandomInt(0, pyro_weapons[slot].len())]);
+            break;
+        case 4: // Demo
+            hPlayer.GiveWeapon(demo_weapons[slot][RandomInt(0, demo_weapons[slot].len())]);
+            break;
+        case 5: // Heavy
+            hPlayer.GiveWeapon(heavy_weapons[slot][RandomInt(0, heavy_weapons[slot].len())]);
+            break;
+        case 6: // Engi
+            hPlayer.GiveWeapon(engi_weapons[slot][RandomInt(0, engi_weapons[slot].len())]);
+            break;
+        case 7: // Med
+            hPlayer.GiveWeapon(med_weapons[slot][RandomInt(0, med_weapons[slot].len())]);
+            break;
+        case 8: // Sniper
+            hPlayer.GiveWeapon(sniper_weapons[slot][RandomInt(0, sniper_weapons[slot].len())]);
+            break;
+        case 8: // Snpy
+            hPlayer.GiveWeapon(spy_weapons[slot][RandomInt(0, spy_weapons[slot].len())]);
             break;
     }
 }
@@ -140,6 +195,8 @@ function OnGameEvent_player_spawn(params){
 
     //hPlayer.GiveWeapon(scout_weapons[0][RandomInt(0, scout_weapons[0].len())])
     GiveRandomWeapon(hPlayer, 0, 0);
+    GiveRandomWeapon(hPlayer, 1, 0);
+    GiveRandomWeapon(hPlayer, 2, 0);
 }
 
 
